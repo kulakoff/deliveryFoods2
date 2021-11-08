@@ -1,4 +1,5 @@
-const cardsRestaurants = document.querySelector(".cards-restaurants");
+const partners = ()=>{
+  const cardsRestaurants = document.querySelector(".cards-restaurants");
 // console.log(cardsRestaurants);
 
 const renderItemsRest = (data) => {
@@ -43,3 +44,7 @@ fetch(`./db/partners.json`)
   .then((data) => {
     renderItemsRest(data);
   });
+
+}
+
+partners()
