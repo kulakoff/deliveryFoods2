@@ -38,24 +38,34 @@ const cart = () => {
                 <span class="food-name">${name}</span>
                 <strong class="food-price">${price} ₽</strong>
                 <div class="food-counter">
-                    <button class="counter-button btn-dec">-</button>
+                    <button class="counter-button btn-dec" data-index="${id}">-</button>
                     <span class="counter">${count}</span>
-                    <button class="counter-button btn-inc">+</button>
+                    <button class="counter-button btn-inc" data-index="${id}">+</button>
                 </div>
           `;
 
-      cartElem.querySelector(".btn-dec").addEventListener("click", () => {
-        decrementCount(id);
-      });
+      // cartElem.querySelector(".btn-dec").addEventListener("click", () => {
+      //   decrementCount(id);
+      // });
 
-      cartElem.querySelector(".btn-inc").addEventListener("click", () => {
-        incrementCount(id);
-      });
+      // cartElem.querySelector(".btn-inc").addEventListener("click", () => {
+      //   incrementCount(id);
+      // });
 
       body.append(cartElem);
       //   console.log(cartElem);
     });
   };
+
+  body.addEventListener('click',(e)=>{
+e.preventDefault()
+if (e.target.classList.contains('btn-inc')){
+  incrementCount(e.target.dataset.index);
+
+}else if (e.target.classList.contains('btn-dec')){
+  decrementCount(e.target.dataset.index)
+}
+  })
 
   buttonCart.addEventListener("click", () => {
     if (localStorage.getItem("cart")) {
