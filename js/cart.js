@@ -3,6 +3,13 @@ const cart = () => {
   const modalCart = document.querySelector(".modal-cart");
   const close = document.querySelector(".close");
   const body = document.querySelector(".modal-body");
+  const buttonSend = modalCart.querySelector(".button-primary");
+
+  const resetCart = () =>{
+    body.innerHTML = '';
+    localStorage.removeItem('cart')
+    modalCart.classList.remove('is-open')
+  }
 
   const incrementCount = (id) => {
     const cartArray = JSON.parse(localStorage.getItem("cart"));
@@ -57,15 +64,31 @@ const cart = () => {
     });
   };
 
-  body.addEventListener('click',(e)=>{
-e.preventDefault()
-if (e.target.classList.contains('btn-inc')){
-  incrementCount(e.target.dataset.index);
+  body.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (e.target.classList.contains("btn-inc")) {
+      incrementCount(e.target.dataset.index);
+    } else if (e.target.classList.contains("btn-dec")) {
+      decrementCount(e.target.dataset.index);
+    }
+  });
 
-}else if (e.target.classList.contains('btn-dec')){
-  decrementCount(e.target.dataset.index)
-}
-  })
+  buttonSend.addEventListener("click", () => {
+    const cartArray = localStorage.getItem("cart");
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      body: cartArray,
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('data sended, clear cart');
+          resetCart();
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  });
 
   buttonCart.addEventListener("click", () => {
     if (localStorage.getItem("cart")) {
