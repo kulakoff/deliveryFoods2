@@ -4,6 +4,30 @@ const cart = () => {
   const close = document.querySelector(".close");
   const body = document.querySelector(".modal-body");
 
+  const incrementCount = (id) => {
+    const cartArray = JSON.parse(localStorage.getItem("cart"));
+    cartArray.map((item) => {
+      if (item.id === id) {
+        item.count++;
+      }
+      return item;
+    });
+    localStorage.setItem("cart", JSON.stringify(cartArray));
+    renderItems(cartArray);
+  };
+
+  const decrementCount = (id) => {
+    const cartArray = JSON.parse(localStorage.getItem("cart"));
+    cartArray.map((item) => {
+      if (item.id === id) {
+        item.count = item.count > 0 ? item.count - 1 : 0;
+      }
+      return item;
+    });
+    localStorage.setItem("cart", JSON.stringify(cartArray));
+    renderItems(cartArray);
+  };
+
   const renderItems = (data) => {
     body.innerHTML = "";
     data.forEach(({ name, price, id, count }) => {
@@ -19,6 +43,15 @@ const cart = () => {
                     <button class="counter-button btn-inc">+</button>
                 </div>
           `;
+
+      cartElem.querySelector(".btn-dec").addEventListener("click", () => {
+        decrementCount(id);
+      });
+
+      cartElem.querySelector(".btn-inc").addEventListener("click", () => {
+        incrementCount(id);
+      });
+
       body.append(cartElem);
       //   console.log(cartElem);
     });
